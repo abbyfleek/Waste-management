@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 
-// Replace with your own Supabase URL and API key
+// Supabase URL and API key
 const supabaseUrl = "https://fbpcfpplfetfcjzvgxnc.supabase.co"
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZicGNmcHBsZmV0ZmNqenZneG5jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM2OTczNjEsImV4cCI6MjA1OTI3MzM2MX0.45OHr6JopL31I4PC-d0fV0eHxMPuU1Agfesj56BAjfc"
 const supabase = createClient(supabaseUrl, supabaseKey)
@@ -23,18 +23,18 @@ function showLogin() {
 async function register() {
     const email = document.getElementById("signupEmail").value;
     const password = document.getElementById("signupPassword").value;
-    const role = "user"; // Change to "user" or "collector" if needed
+    const role = "user"; // Change to user or "collector when i need to
 
     const { data, error } = await supabase.auth.signUp({ email, password });
 
     if (error) {
         alert("Signup error: " + error.message);
-        return;
+                                                return;
     }
 
     const userId = data.user?.id || data.session?.user.id;
 
-    // Optional: Check if user already exists
+    //It Checks if user already exists
     const { data: existingUser, error: checkError } = await supabase
         .from("users")
         .select("id")
@@ -182,9 +182,9 @@ function scanQR() {
             video.srcObject = stream;
             video.play();
             video.style.display = "none"
-            document.body.appendChild(video); // Optional: append the video to the page
+            document.body.appendChild(video); //This appends the video to the page
 
-            // Keep scanning the video feed every 500ms
+            // Keeps scanning the video feed every 500ms
             const interval = setInterval(() => {
                 if (video.readyState === video.HAVE_ENOUGH_DATA) {
                     // Set canvas dimensions to match video dimensions
@@ -201,7 +201,7 @@ function scanQR() {
                     const qrCode = jsQR(imageData.data, canvas.width, canvas.height);
 
                     if (qrCode) {
-                        // If a QR code is found, process it (verify location in your case)
+                        // If a QR code is found, process it (verify location)
                         verifyQRLocation(qrCode.data);
 
                         // Stop the video stream and remove video element from the page
@@ -293,7 +293,7 @@ function displayBinInfo(binData) {
 async function updateAndCheckWasteLevel(binId, newWasteLevel) {
     // Update the waste level and last updated timestamp
     const { data, error } = await supabase
-        .from("bins") // Reference to the 'bins' table in Supabase
+        .from("bins") // Reference to the bins table in Supabase
         .update({ 
             waste_level: newWasteLevel, 
             last_updated: new Date().toISOString()  // Use ISO string for timestamp
@@ -315,7 +315,7 @@ async function updateAndCheckWasteLevel(binId, newWasteLevel) {
         .eq("bin_id", binId)
         .single();  // Expecting a single row since we're querying by bin_id
 
-    // Check if there's an error in fetching updated bin data
+    // This Checks if there's an error in fetching updated bin data
     if (fetchError) {
         console.log("Error fetching updated bin data:", fetchError.message);
         return;
